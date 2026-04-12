@@ -31,7 +31,7 @@ mkdir -p ~/YourPath
 cp weather.sh ~/YourPath/
 cp user_modules.ini ~/YourPath/
 
-### Step 3: Make Executable
+### Step 3: Make Script Executable
 
 chmod +x ~/YourPath/weather.sh
 
