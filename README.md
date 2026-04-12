@@ -4,11 +4,11 @@
 
 ![Network Info](Screenshots/2.png)
 
-![Network Details](Screenshots/3.png)
+<p align="center">
+<img src="Screenshots/3.png" width="45%">
+</p>
 
 This is an updated version of the polybar themes compared to the original at https://github.com/adi1090x/polybar-themes - featuring modern enhancements like More scripts, More day to day use Models and more.
-
-![Network Status](Screenshots/5.png)
 
 ---
 
