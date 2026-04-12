@@ -1,24 +1,109 @@
-# Enhanced Weather Module for Polybar
+# Enhanced WiFi Menu & Status Modules
 
-![Weather Module](Screenshots/2.png)
+![WiFi Menu](Screenshots/4.png)
+
+![Network Info](Screenshots/2.png)
 
 This is an updated version of the polybar themes compared to the original at https://github.com/adi1090x/polybar-themes - featuring modern enhancements like More scripts, More day to day use Models and more.
 
-![Weather Full Moon](Screenshots/3.png)
+![Network Status](Screenshots/5.png)
 
-Special feature: Full moon detection - shows a unique icon during full moon nights!
+---
+
+This package provides enhanced WiFi menu and status modules for Linux systems using NetworkManager.
+
+## What Does This Do?
+
+This provides two main components:
+
+1. **wifimenu-podobu** - A WiFi connection menu that works with any launcher (wofi, rofi, etc.)
+2. **network-wifi.sh** - A status module to display WiFi connection status (works with polybar, waybar, or similar)
+
+## Files Included
+
+1. **wifimenu-podobu** - Main WiFi menu script
+2. **network-wifi.sh** - WiFi status display script
+3. **user_modules.ini** - Module configuration (for polybar/waybar users)
+4. **README.md** - This file
 
 ---
 
 ## Features
 
-- Fetches weather data from OpenWeatherMap API
-- Custom weather icons for different conditions (sun, moon, clouds, rain, etc.)
-- Temperature-based color coding (cold/blue, hot/orange)
-- Moon phase detection (shows special icon during full moon)
-- 30-minute update interval
-- Configurable city and API key
-- Caching to reduce API calls
+### wifimenu-podobu Features
+
+- Network scanning with signal strength indicators
+- Saved network detection with indicator icon (󱣪)
+- Disconnect by pressing Enter on connected network
+- Refresh cooldown (15 seconds) with message
+- SSID truncation for long network names (>70 chars)
+- **"Try Again" feature** for saved networks with changed passwords (avoids system password dialog)
+- Network Information menu with detailed network stats
+- Auto Connection toggle to automatically connect to available saved networks
+- Network count display on Refresh Networks option
+- **Remove All Saved Networks** option in Known Connections (keeps current connection)
+- **Back** option in Known Connections menu
+- Works with any launcher (wofi, rofi, dmenu, etc.)
+- Cherry theme color menu
+
+### How "Try Again" Works (Avoiding System Password Dialog)
+
+When connecting to a saved network where the password has changed, the OS may show a system password dialog (like KDE's). This script handles it gracefully:
+
+1. **First Attempt**: Try to connect to the saved network using nmcli
+2. **Detect Failure**: If connection fails (wrong password), the script:
+   - Deletes the saved connection from NetworkManager
+   - Saves the network name to a pending file (`.pending_network`)
+   - Exits with code 42 to restart the menu
+3. **Show as Try Again**: The network now appears in the menu with "(Try Again)" suffix
+4. **User Re-enters Password**: User selects it and enters the new password
+5. **Connect Fresh**: The script connects to the network with the new password and saves it
+
+This way, users don't get stuck at system dialogs - they can re-enter passwords through the menu itself.
+
+### network-wifi.sh Features
+
+- Shows current connection with SSID and download speed
+- Different icons based on connection state:
+  - **Offline**: 󰖪 + "Offline"
+  - **Connected but no internet**: 󰤣 + SSID + speed
+  - **Connected with internet**:  + SSID + speed
+  - **Connecting**: Cycles through 󰤯 󰤟 󰤢 󰤥 󰤨 (every half second)
+- Real-time download speed calculation
+- Click to open WiFi menu (when used with polybar/waybar)
+
+### Menu Options
+
+- **Disable Wi-Fi** - Turn off WiFi
+- **Refresh Networks** - Rescan networks (shows network count [n])
+- **Network Information** - View detailed network info
+- **Auto Connection** (Toggle: 󰈄/󰛅) - Auto-connect to saved networks when not connected
+- **Close the menu** - Exit menu
+- Network list - Available WiFi networks with signal bars
+
+### Icons Used
+
+- 󰤪 󰤤 󰤡 - Secured networks (signal strength)
+- 󰤨 󰤢 󰤟 - Open networks (signal strength)
+- 󱣪 - Saved network indicator
+- 󰑙 - Refresh icon
+- 󰈔 - Network info icon
+- 󰤣 - Connected but no internet
+-  - Connected with internet
+- 󰖪 - Offline
+- 󰤯 󰤟 󰤢 󰤥 󰤨 - Connecting animation
+- 󰈄 - Auto connection OFF
+- 󰛅 - Auto connection ON
+
+---
+
+## Requirements
+
+- Linux operating system
+- NetworkManager (nmcli command)
+- A launcher program (wofi, rofi, dmenu, wmenu, or bemenu)
+- Nerd Fonts for icons
+- For network-wifi.sh status: polybar, waybar, or similar (optional)
 
 ---
 
@@ -26,138 +111,103 @@ Special feature: Full moon detection - shows a unique icon during full moon nigh
 
 ### Step 1: Choose Where to Put Your Scripts
 
-Decide where you want to store your script. For this example, we'll use `~/polybar-scripts/`.
+Decide where you want to store your scripts. For this example, we'll use `~/wifi-scripts/`.
 
-Replace `~/YourPath/` in all file paths with your chosen directory.
+Replace `~/YourPath/` in all file paths with your chosen directory (e.g., `~/wifi-scripts/`).
 
 ### Step 2: Create the Directory
 
 ```bash
-mkdir -p ~/polybar-scripts
+mkdir -p ~/wifi-scripts
 ```
 
 ### Step 3: Copy the Files
 
+Copy the downloaded files to your new directory:
 ```bash
-cp weather.sh ~/polybar-scripts/
-cp user_modules.ini ~/polybar-scripts/
+cp wifimenu-podobu ~/wifi-scripts/
+cp network-wifi.sh ~/wifi-scripts/
+cp user_modules.ini ~/wifi-scripts/
 ```
 
-### Step 4: Make Script Executable
+### Step 4: Make Scripts Executable
 
 ```bash
-chmod +x ~/polybar-scripts/weather.sh
+chmod +x ~/wifi-scripts/wifimenu-podobu
+chmod +x ~/wifi-scripts/network-wifi.sh
 ```
 
-### Step 5: Configure Your Location and API Key
+### Step 5: Create a Wrapper Script (Optional but Recommended)
 
-Edit `weather.sh` and update:
-
-**Getting CITY_ID:**
-1. Go to https://openweathermap.org/cities
-2. Search for your city
-3. The city ID is the number at the end of the URL
-   - Example: For London, URL is `https://openweathermap.org/city/2643743` → CITY_ID = `2643743`
-
-**Getting API_KEY:**
-1. Go to https://home.openweathermap.org/api_keys
-2. If you don't have an account, sign up at https://openweathermap.org
-3. After logging in, go to API Keys section
-4. Click "Create New API Key" - give it a name (e.g., "Newbar")
-5. Copy the new key and paste it in weather.sh
-
-Update these lines in `weather.sh`:
+Create a file called `wifimenu.sh`:
 ```bash
-CITY_ID="1234567"  # Your city ID
-API_KEY="your_api_key_here"  # Your OpenWeatherMap API key
+#!/bin/bash
+while true; do
+    ~/wifi-scripts/wifimenu-podobu "$@"
+    exit_code=$?
+    if [ $exit_code -ne 42 ]; then
+        break
+    fi
+done
+```
+
+Make it executable:
+```bash
+chmod +x ~/wifi-scripts/wifimenu.sh
 ```
 
 ### Step 6: Update Paths in user_modules.ini
 
-Open `user_modules.ini` and change:
-```
-exec = ~/YourPath/weather.sh
-```
-to your actual path, for example:
-```
-exec = ~/polybar-scripts/weather.sh
-```
+Open `user_modules.ini` and update all paths from `~/YourPath/` to your actual path.
 
-### Step 7: Add to Polybar
+### Step 7: Add to Polybar/Waybar
 
-Add the weather module to your polybar config:
-```
-modules-right = ... weather ...
-```
+Add the module to your bar config and copy the user_modules.ini content.
 
-Or copy the content from `user_modules.ini` to your existing user_modules.ini.
-
-### Step 8: Restart Polybar
-
-```bash
-polybar kill
-polybar &
-```
+### Step 8: Restart Bar
 
 ---
 
-## Customization
+## Customization Guide
 
-### Changing Update Interval
+### Changing Script Locations
 
-Edit `user_modules.ini`:
-```ini
-interval = 1800  # 30 minutes in seconds
-```
+1. **wifimenu-podobu**: Uses `SDIR="$(dirname "$0")"` to find its own location.
 
-### Changing City
+2. **network-wifi.sh** (line 5): Change the speed file location:
+   ```bash
+   SPEED_FILE="$HOME/.cache/wifi-speed.data"
+   ```
 
-Edit `weather.sh` line 8:
-```bash
-CITY_ID="1255955"  # Your city ID
-```
-
-### Changing Temperature Units
-
-Edit `weather.sh` line 10:
-```bash
-UNITS="metric"    # metric (°C) or imperial (°F)
-```
+3. **user_modules.ini**: Update all paths.
 
 ### Key Directory References
 
 | File | Line | Description | Default | Change To |
 |------|------|-------------|---------|-----------|
-| weather.sh | 8 | City ID | 1255955 | Your city ID |
-| weather.sh | 9 | API Key | Your key | Your API key |
-| weather.sh | 14 | Cache file | ~/.cache/weather.json | ~/YourPath/weather.json |
-| user_modules.ini | 7 | Script path | ~/YourPath/weather.sh | Your path |
-
----
-
-## Requirements
-
-- Linux with NetworkManager
-- Polybar
-- curl (for API calls)
-- jq (optional, for better JSON parsing)
-- OpenWeatherMap API key (free)
+| wifimenu-podobu | ~ (SDIR) | Log, pending network files | Script directory | `$HOME/YourPath` |
+| network-wifi.sh | 5 | Speed data file | `$HOME/.cache/wifi-speed.data` | `~/YourPath/wifi-speed.data` |
 
 ---
 
 ## Troubleshooting
 
-### Weather shows N/A
-- Check your API key is correct
-- Check your CITY_ID is correct
-- Make sure you have internet connection
+### WiFi menu doesn't open
+- Check path is correct
+- Make sure script is executable
+
+### Networks not showing
+- `nmcli radio wifi on`
+- `nmcli device wifi list`
 
 ### Icons not showing
-- Make sure Nerd Fonts are installed
-- Check your terminal uses a Nerd Font
+- Install Nerd Fonts
 
 ---
 
-## Credits
+## License & Credits
 
-This is based on various polybar weather modules. Modified and enhanced for better functionality.
+This is a customized version of the original wifimenu created by Jesús Arenas (podobu).  
+I, Anindra Mohan Trivedi, have modified it to add modern features and improvements.
+
+See the original project: https://github.com/podobu/wifimenu
