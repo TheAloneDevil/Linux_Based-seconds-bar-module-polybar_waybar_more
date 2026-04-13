@@ -34,29 +34,60 @@ This package provides enhanced WiFi menu and status modules for Linux desktop.
 ## Installation
 
 ### Step 1: Create Directory
-mkdir -p ~/YourPath
+```bash
+mkdir -p ~/.config/polybar/forest/scripts
+```
 
 ### Step 2: Copy Files
-cp wifimenu-podobu ~/YourPath/
-cp network-wifi.sh ~/YourPath/
-cp user_modules.ini ~/YourPath/
+```bash
+cp wifimenu-podobu ~/.config/polybar/forest/scripts/
+cp network-wifi.sh ~/.config/polybar/forest/scripts/
+cp user_modules.ini ~/.config/polybar/forest/scripts/
+```
 
 ### Step 3: Make Executable
-chmod +x ~/YourPath/wifimenu-podobu
-chmod +x ~/YourPath/network-wifi.sh
+```bash
+chmod +x ~/.config/polybar/forest/scripts/wifimenu-podobu
+chmod +x ~/.config/polybar/forest/scripts/network-wifi.sh
+```
 
 ### Step 4: Create Wrapper (Optional)
-Create wifimenu.sh:
+Create `~/.config/polybar/forest/scripts/wifimenu.sh`:
 ```bash
 #!/bin/bash
 while true; do
-    ~/YourPath/wifimenu-podobu "$@"
+    ~/.config/polybar/forest/scripts/wifimenu-podobu "$@"
     [ $? -ne 42 ] && break
 done
 ```
+Then make it executable:
+```bash
+chmod +x ~/.config/polybar/forest/scripts/wifimenu.sh
+```
 
-### Step 5: Update Paths
-Edit user_modules.ini - change ~/YourPath/ to your path.
+### Step 5: Update Paths in user_modules.ini
+Open `user_modules.ini` and replace:
+- Line 5: Change `~/YourPath` to your actual scripts path (e.g., `~/.config/polybar/forest/scripts`)
+- Line 10: Change `~/YourPath` to your actual scripts path
+- Line 11: Change `~/YourPath` to your actual scripts path
+
+Example after editing:
+```ini
+exec = ~/.config/polybar/forest/scripts/network-wifi.sh
+label = "%{A1:~/.config/polybar/forest/scripts/wifimenu.sh &:}%output%%{A}"
+click-left = ~/.config/polybar/forest/scripts/wifimenu.sh
+```
+
+### Step 6: Enable Module in polybar config
+Open your polybar config file (e.g., `~/.config/polybar/forest/config`) and add:
+```ini
+[module/network-wifi]
+include-file = ~/.config/polybar/forest/scripts/user_modules.ini
+
+[bar/top]
+modules-left = network-wifi
+```
+Adjust `modules-left` or `modules-right` based on where you want the WiFi module to appear.
 
 ---
 
