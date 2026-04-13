@@ -14,8 +14,19 @@ This package provides a visual seconds indicator module for Linux desktop polyba
 
 - Visual 12-segment bar showing seconds (0-60)
 - Color gradient from green to red as seconds progress
-- Clock icon that changes every 5 minutes
+- Clock icon that updates every 5 minutes (12 icons for 12 positions)
 - Real-time updates
+
+---
+
+<p align="center">
+  <img src="Screenshots/2.png" width="400"/>
+</p>
+
+<p align="center">
+  <img src="Screenshots/3.png" width="400"/>
+  <img src="Screenshots/4.png" width="400"/>
+</p>
 
 ---
 
