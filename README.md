@@ -1,39 +1,21 @@
-# Enhanced Brightness Module for Polybar
+# Enhanced Seconds Bar Module for Polybar
 
-This package provides enhanced brightness modules for Linux desktop polybar.
+This package provides a visual seconds indicator module for Linux desktop polybar.
 
 ## Files Included
 
-1. **brightness.sh** - Main brightness script (with progress bar)
-2. **brightness1.sh** - Alternative brightness script (with dot indicators)
-3. **user_modules.ini** - Module configuration
-4. **README.md** - This file
+1. **secondsbar.sh** - Main seconds bar script
+2. **user_modules.ini** - Module configuration
+3. **README.md** - This file
 
 ---
 
 ## Features
 
-- DDC/CI support for external monitors (via ddcutil)
-- System backlight fallback (via brightnessctl)
-- Visual brightness indicators (icons + progress)
-- Scroll to adjust brightness
-- Two visual styles: bar and dots
-
----
-
-<p align="center">
-  <img src="Screenshots/2.png" width="400"/>
-</p>
-
-<p align="center">
-  <img src="Screenshots/3.png" width="400"/>
-  <img src="Screenshots/4.png" width="400"/>
-</p>
-
-<p align="center">
-  <img src="Screenshots/5.png" width="400"/>
-  <img src="Screenshots/6.png" width="400"/>
-</p>
+- Visual 12-segment bar showing seconds (0-60)
+- Color gradient from green to red as seconds progress
+- Clock icon that changes every 5 minutes
+- Real-time updates
 
 ---
 
@@ -41,8 +23,7 @@ This package provides enhanced brightness modules for Linux desktop polybar.
 
 ### Step 1: Install Dependencies
 ```bash
-# Required: ddcutil (for DDC/CI monitors) and brightnessctl (for system backlight)
-sudo apt install ddcutil brightnessctl
+# No additional dependencies required
 ```
 
 ### Step 2: Create Directory
@@ -52,67 +33,47 @@ mkdir -p ~/your_path
 
 ### Step 3: Copy Files
 ```bash
-cp brightness.sh ~/your_path/
-cp brightness1.sh ~/your_path/
+cp secondsbar.sh ~/your_path/
 cp user_modules.ini ~/your_path/
 ```
 
 ### Step 4: Make Executable
 ```bash
-chmod +x ~/your_path/brightness.sh
-chmod +x ~/your_path/brightness1.sh
+chmod +x ~/your_path/secondsbar.sh
 ```
 
 ### Step 5: Update Paths in user_modules.ini
-Open `user_modules.ini` in a text editor and edit these specific lines:
+Open `user_modules.ini` in a text editor and edit:
 
 | Line | Edit This | Change To |
 |------|-----------|----------|
-| 5 | `exec = ~/your_path/brightness.sh get` | (keep as-is if using this path) |
-| 6 | `interval = 1` | (keep) |
-| 7 | `tail = true` | (keep) |
-| 8 | `format = <label>` | (keep) |
-| 9 | `format-prefix = "%{T1}"` | (keep) |
-| 10 | `label = %output%` | (keep) |
-| 11 | `scroll-up = ~/your_path/brightness.sh inc` | (adjust path if different) |
-| 12 | `scroll-down = ~/your_path/brightness.sh dec` | (adjust path if different) |
-| 13 | `cursor-scroll = ns-resize` | (keep) |
-| 17 | `exec = ~/your_path/brightness1.sh get` | (adjust path if different) |
-| 23 | `scroll-up = ~/your_path/brightness1.sh inc` | (adjust path if different) |
-| 24 | `scroll-down = ~/your_path/brightness1.sh dec` | (adjust path if different) |
+| 4 | `exec = ~/your_path/secondsbar.sh` | (adjust path if different) |
 
 ### Step 6: Enable Module in polybar config
-Open your polybar config file (e.g., `~/.config/polybar/forest/config`):
+Open your polybar config file:
 
-1. Find the `[module/...]` section (around line 5-10) and add:
+1. Add include:
 ```ini
 include-file = ~/your_path/user_modules.ini
 ```
 
-2. Find your bar section (e.g., `[bar/top]`) and add `brightness-control` or `brightness1-control` to `modules-right`:
+2. Add to bar:
 ```ini
 [bar/top]
-modules-right = brightness1-control
+modules-right = secondsbar
 ```
-
-**Note:** If you already have other modules listed, add to the existing list (e.g., `modules-right = battery_status brightness1-control`).
 
 ---
 
 ## Usage
 
-- **brightness.sh**: Shows percentage + 10-segment bar
-- **brightness1.sh**: Shows percentage + 7-dot indicator
-- Scroll up on module to increase brightness
-- Scroll down on module to decrease brightness
+Shows a visual countdown representing the current second (0-60) as a 12-segment bar. The bar fills from green to red as the minute progresses.
 
 ---
 
 ## Requirements
 
 - Linux desktop with polybar
-- brightnessctl (for system backlight)
-- ddcutil (optional, for DDC/CI monitors)
 
 ---
 
@@ -122,31 +83,15 @@ This module uses the following fonts (font-n = T(n+1)):
 
 | Tag | Font Number | Font Name | Size |
 |-----|-------------|-----------|------|
-| T1 | font-0 | Iosevka Nerd Font | 10;4 |
-| T9 | font-8 | Iosevka Nerd Font | 13;4 |
-| T16 | font-15 | Iosevka Nerd Font | 8;3 |
-| T19 | font-18 | Iosevka Nerd Font | 6;2 |
-| T28 | font-27 | Iosevka Nerd Font | 14;4 |
+| T21 | font-20 | Iosevka Nerd Font | 14;3.1 |
+| T22 | font-21 | Iosevka Nerd Font | 7;2 |
 
-**Note:** Ensure these fonts are defined in your polybar config. Add to your `config.ini`:
+**Note:** Ensure these fonts are defined in your polybar config:
 
 ```ini
-font-0 = "Iosevka Nerd Font:size=10;4"
-font-8 = "Iosevka Nerd Font:size=13;4"
-font-15 = "Iosevka Nerd Font:size=8;3"
-font-18 = "Iosevka Nerd Font:size=6;2"
-font-27 = "Iosevka Nerd Font:size=14;4"
+font-20 = "Iosevka Nerd Font:size=14;3.1"
+font-21 = "Iosevka Nerd Font:size=7;2"
 ```
-
----
-
-## Contribution
-
-This is a customized version of the original brightness module. I, Anindra Mohan Trivedi, have modified it to add modern features and improvements.
-
-## Credits
-
-Based on brightness modules for polybar.
 
 ---
 
