@@ -84,7 +84,7 @@ Shows a visual countdown representing the current second (0-60) as a 12-segment 
 
 ## Requirements
 
-- Linux desktop with polybar
+- Linux desktop with polybar/Waybar or other
 
 ---
 
