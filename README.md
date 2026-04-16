@@ -2,6 +2,19 @@
 
 This package provides a visual seconds indicator module for Linux desktop polybar.
 
+---
+
+<p align="center">
+  <img src="Screenshots/2.png" width="400"/>
+</p>
+
+<p align="center">
+  <img src="Screenshots/3.png" width="400"/>
+  <img src="Screenshots/4.png" width="400"/>
+</p>
+
+---
+
 ## Files Included
 
 1. **secondsbar.sh** - Main seconds bar script
@@ -16,17 +29,6 @@ This package provides a visual seconds indicator module for Linux desktop polyba
 - Color gradient from green to red as seconds progress
 - Clock icon that updates every 5 minutes (12 icons for 12 positions)
 - Real-time updates
-
----
-
-<p align="center">
-  <img src="Screenshots/2.png" width="400"/>
-</p>
-
-<p align="center">
-  <img src="Screenshots/3.png" width="400"/>
-  <img src="Screenshots/4.png" width="400"/>
-</p>
 
 ---
 
