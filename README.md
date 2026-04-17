@@ -73,7 +73,7 @@ include-file = ~/your_path/user_modules.ini
 2. Add to bar:
 ```ini
 [bar/top]
-modules-right = secondsbar ( eg, modules-right/center/left = battery secondsbar )
+modules-right = secondsbar #( eg, modules-right/center/left = battery secondsbar )
 ```
 
 ---
