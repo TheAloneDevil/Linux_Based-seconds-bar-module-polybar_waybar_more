@@ -1,6 +1,6 @@
-# Enhanced Seconds Bar Module for Polybar
+# Enhanced Seconds Bar Module for Linux Module ( Shell-Script )
 
-This package provides a visual seconds indicator module for Linux desktop polybar.
+This package provides a visual seconds indicator module for Linux desktop module .
 
 ---
 
@@ -62,7 +62,7 @@ Open `user_modules.ini` in a text editor and edit:
 |------|-----------|----------|
 | 4 | `exec = ~/your_path/secondsbar.sh` | (adjust path if different) |
 
-### Step 6: Enable Module in polybar config
+### Step 6: Enable Module in your config
 Open your polybar config file:
 
 1. Add include:
@@ -73,7 +73,7 @@ include-file = ~/your_path/user_modules.ini
 2. Add to bar:
 ```ini
 [bar/top]
-modules-right = secondsbar
+modules-right = secondsbar ( eg, modules-right/center/left = battery secondsbar )
 ```
 
 ---
@@ -99,7 +99,7 @@ This module uses the following fonts (font-n = T(n+1)):
 | T21 | font-20 | Iosevka Nerd Font | 14;3.1 |
 | T22 | font-21 | Iosevka Nerd Font | 7;2 |
 
-**Note:** Ensure these fonts are defined in your polybar config:
+**Note:** Ensure these fonts are defined in your config:
 
 ```ini
 font-20 = "Iosevka Nerd Font:size=14;3.1"
