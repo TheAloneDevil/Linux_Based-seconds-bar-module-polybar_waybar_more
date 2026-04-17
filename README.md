@@ -58,9 +58,9 @@ chmod +x ~/your_path/secondsbar.sh
 ### Step 5: Update Paths in user_modules.ini
 Open `user_modules.ini` in a text editor and edit:
 
-| Line | Edit This | Change To |
-|------|-----------|----------|
-| 4 | `exec = ~/your_path/secondsbar.sh` | (adjust path if different) |
+| Edit This | Change To |
+|-----------|----------|
+| `exec = ~/your_path/secondsbar.sh` | (adjust path if different) |
 
 ### Step 6: Enable Module in your config
 Open your polybar config file:
